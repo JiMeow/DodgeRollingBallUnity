@@ -17,10 +17,14 @@ public class EnermyMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        EnermyRigid.AddForce(new Vector3(
-            player.transform.position.x - EnermyTransform.position.x,
-            0,
-            player.transform.position.z - EnermyTransform.position.z) * Time.deltaTime * 100);
+        Vector3 direction = player.transform.position - EnermyTransform.position;
+        if (EnermyRigid.velocity.magnitude > 15)
+        {
+            EnermyRigid.velocity = direction.normalized * 15;
+            EnermyRigid.velocity = new Vector3(EnermyRigid.velocity.x, 0, EnermyRigid.velocity.z);
+        }
+        direction.y = 0;
+        EnermyRigid.AddForce(direction * Time.deltaTime * 100);
     }
 
     public void reset()
